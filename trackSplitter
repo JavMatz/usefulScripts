@@ -1,0 +1,23 @@
+#!/bin/sh
+
+input=$1
+
+#[ ! -z '$input' ] || echo "Please provide an input file" ; exit
+if [ -e ./ProcList.csv ] || [ -n $input ]
+then
+	[ ! -d ./Tracks ] && mkdir ./Tracks 
+	totalTracks=$(wc -l ./ProcList.csv | awk '{print $1}')
+	for track in $(seq 1 $totalTracks)
+	do
+		trackStart=$(awk -F, '$1 == '$track' {print $2}' ./ProcList.csv)
+		trackEnd=$(awk -F, '$1 == '$track' {print $3}' ./ProcList.csv)
+
+		trackNumber=$(awk -F, '$1 == '$track' {print $1}' ./ProcList.csv)
+		trackName=$(awk -F, '$1 == '$track' {print $4}' ./ProcList.csv)
+		trackArtist=$(awk -F, '$1 == '$track' {print $5}' ./ProcList.csv)
+
+		ffmpeg -i "$input" -ss $trackStart -to $trackEnd -c copy ./Tracks/"$trackNumber - $trackArtist - $trackName".mp3
+	done
+else
+	echo There\'s no \'ProcList\' file. Please create one.
+fi

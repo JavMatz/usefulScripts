@@ -1,0 +1,9 @@
+#! /bin/sh
+
+#Requires acpi packages
+POWER=$(acpi -a | cut -d' ' -f3 | cut -d- -f1) #POWER takes the value 'on' or 'off'
+
+if [ $POWER = 'off' ]
+then
+	notify-send --urgency=critical '¡ATENCION!' 'El cable de energía esta DESCONECTADO'
+fi
