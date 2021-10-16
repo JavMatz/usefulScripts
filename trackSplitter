@@ -1,22 +1,27 @@
 #!/bin/sh
 
-input=$1
+INPUT=$1
+ALBUM=${2:-Album}
 
-#[ ! -z '$input' ] || echo "Please provide an input file" ; exit
-if [ -e ./ProcList.csv ] || [ -n $input ]
+[ -z "$INPUT" ] && echo "Please provide an input file" && exit
+
+if [ -e ./ProcList.csv ]
 then
 	[ ! -d ./Tracks ] && mkdir ./Tracks 
-	totalTracks=$(wc -l ./ProcList.csv | awk '{print $1}')
-	for track in $(seq 1 $totalTracks)
+	TOTALTRACKS=$(wc -l ./ProcList.csv | awk '{print $1}')
+	for TRACK in $(seq 1 $TOTALTRACKS)
 	do
-		trackStart=$(awk -F, '$1 == '$track' {print $2}' ./ProcList.csv)
-		trackEnd=$(awk -F, '$1 == '$track' {print $3}' ./ProcList.csv)
+		TRACKSTART=$(awk -F, '$1 == '$TRACK' {print $2}' ./ProcList.csv)
+		TRACKEND=$(awk -F, '$1 == '$TRACK' {print $3}' ./ProcList.csv)
 
-		trackNumber=$(awk -F, '$1 == '$track' {print $1}' ./ProcList.csv)
-		trackName=$(awk -F, '$1 == '$track' {print $4}' ./ProcList.csv)
-		trackArtist=$(awk -F, '$1 == '$track' {print $5}' ./ProcList.csv)
+		TRACKNUMBER=$(awk -F, '$1 == '$TRACK' {print $1}' ./ProcList.csv)
+		TRACKNAME=$(awk -F, '$1 == '$TRACK' {print $4}' ./ProcList.csv)
+		TRACKARTIST=$(awk -F, '$1 == '$TRACK' {print $5}' ./ProcList.csv)
 
-		ffmpeg -i "$input" -ss $trackStart -to $trackEnd -c copy ./Tracks/"$trackNumber - $trackArtist - $trackName".mp3
+		ffmpeg -i "$INPUT" -ss $TRACKSTART -to $TRACKEND -c copy ./Tracks/output.mp3
+
+		taffy --track "$TRACKNUMBER" --album "$ALBUM" --artist "$TRACKARTIST" --title "$TRACKNAME" --rename-fs "%n - %R - %T" ./Tracks/output.mp3
+
 	done
 else
 	echo There\'s no \'ProcList\' file. Please create one.

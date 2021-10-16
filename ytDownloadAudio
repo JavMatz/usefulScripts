@@ -1,4 +1,13 @@
 #!/bin/sh
 
-youtube-dl --extract-audio --audio-format mp3 --limit-rate 196K --audio-quality 0 $1
+ID=$1
+TRACK_ARTIST=${2:-Artist}
+TRACK_ALBUM=${3:-Album}
 
+TRACK_NAME=$(youtube-dl --get-filename -o '%(title)s' $ID)
+
+export TRACK_NAME=$TRACK_NAME.mp3
+
+youtube-dl -o '%(title)s.%(ext)s' --extract-audio --audio-format mp3 --limit-rate 196K --audio-quality 0 $ID
+
+taffy --artist "$TRACK_ARTIST" --album "$TRACK_ALBUM" ./"$TRACK_NAME"
