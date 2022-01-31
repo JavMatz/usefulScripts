@@ -1,0 +1,13 @@
+#!/bin/sh
+
+AREA=${1:-0}
+
+[ -d $HOME/Imágenes/Capturas ] || mkdir $HOME/Imágenes/Capturas
+
+
+if [ $AREA -eq 1 ]
+then
+	scrot -fs '%Y-%m-%d_%I:%M_$wx$h.png' -e 'mv $f '$HOME'/Imágenes/Capturas/'
+else
+	scrot '%Y-%m-%d_%I:%M_$wx$h.png' -e 'mv $f '$HOME'/Imágenes/Capturas/'
+fi

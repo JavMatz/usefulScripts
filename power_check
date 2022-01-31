@@ -1,0 +1,8 @@
+#!/bin/sh
+
+STATUS=$(acpi -a | awk '{print $3}' | awk -F- '{print $1}')
+
+if [ $STATUS = 'off' ]
+then
+    notify-send --urgency=critical 'ALERTA' 'Su laptop no está conectada a la corriente'
+fi

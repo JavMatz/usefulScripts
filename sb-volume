@@ -1,0 +1,11 @@
+#!/bin/sh
+
+ONOFF=$(amixer sget Master | awk -F"[][]" '{print $6}')
+VOL=$(amixer sget Master | awk -F"[][]" '/%/ { print $2 }' | head -n1)
+
+if [ "off" = $ONOFF ]
+then
+	echo "M"
+else
+	echo $VOL
+fi
