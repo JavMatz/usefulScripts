@@ -8,28 +8,31 @@ then
    exit
 fi
 
-# if ! [ -d $DRIVE_PATH/erick_backup ]
-# then
-#     printf "No backup folder on drive. \nCreate it? (y/n)"
-#     read NEW_DIR
+if ! [ -d $DRIVE_PATH/erick_backup ]
+then
+    printf "No backup folder on drive. \nCreate it? (y/n)"
+    read NEW_DIR
 
-#     if [ $NEW_DIR == "y" ] && [ -n $NEW_DIR ]
-#     then
-# 	mkdir $DRIVE_PATH/erick_backup
-#     else
-# 	exit
-#     fi
-# fi
+    if [ $NEW_DIR == "y" ] && [ -n $NEW_DIR ]
+    then
+	mkdir $DRIVE_PATH/erick_backup
+    else
+	printf "Operation cancelled"
+	exit
+    fi
+fi
 
-# ## Documentos ##
-# rsync -rtvn --delete-after $HOME/Documentos/ $DRIVE_PATH/erick_backup/Documentos
-# ## Imágenes ##
-# rsync -rtvn --delete-after $HOME/Imágenes/ $DRIVE_PATH/erick_backup/Imágenes
-# ## Mamá ##
-# rsync -rtvn --delete-after $HOME/Mamá/ $DRIVE_PATH/erick_backup/Mamá
-# ## Música ##
-# rsync -rtvn --delete-after $HOME/Música/ $DRIVE_PATH/erick_backup/Música
-# ## Software ##
-# rsync -rtvn --delete-after --exclude 'Sources' $HOME/Software/ $DRIVE_PATH/erick_backup/Software
-# ## Vídeos ##
-# rsync -rtvn --delete-after $HOME/Vídeos/ $DRIVE_PATH/erick_backup/Vídeos
+## Proyectos ##
+rsync -rtvz --delete-after --exclude={'Programación','*~'} $HOME/Proyectos/ $DRIVE_PATH/erick_backup/Proyectos
+## Documentos ##
+rsync -rtvz --delete-after --exclude '*~' $HOME/Documentos/ $DRIVE_PATH/erick_backup/Documentos
+## Imágenes ##
+rsync -rtvz --delete-after --exclude 'Fondos de escritorio' $HOME/Imágenes/ $DRIVE_PATH/erick_backup/Imágenes
+## Mamá ##
+rsync -rtvz --delete-after $HOME/Mamá/ $DRIVE_PATH/erick_backup/Mamá
+## Música ##
+rsync -rtvz --delete-after $HOME/Música/ $DRIVE_PATH/erick_backup/Música
+## Software ##
+rsync -rtvz --delete-after $HOME/Software/ $DRIVE_PATH/erick_backup/Software
+## Vídeos ##
+rsync -rtvz --delete-after $HOME/Vídeos/ $DRIVE_PATH/erick_backup/Vídeos
