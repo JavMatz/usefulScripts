@@ -23,11 +23,11 @@ then
 fi
 
 ## Proyectos ##
-rsync -rtvz --delete-after --exclude={'Programación','*~'} $HOME/Proyectos/ $DRIVE_PATH/erick_backup/Proyectos
+rsync -rtvz --delete-after --exclude={'Programación','*~','.debris'} $HOME/Proyectos/ $DRIVE_PATH/erick_backup/Proyectos
 ## Documentos ##
-rsync -rtvz --delete-after --exclude '*~' $HOME/Documentos/ $DRIVE_PATH/erick_backup/Documentos
+rsync -rtvz --delete-after --exclude={'*~','.debris'}  $HOME/Documentos/ $DRIVE_PATH/erick_backup/Documentos
 ## Imágenes ##
-rsync -rtvz --delete-after --exclude 'Fondos de escritorio' $HOME/Imágenes/ $DRIVE_PATH/erick_backup/Imágenes
+rsync -rtvz --delete-after --exclude={'Fondos de escritorio','.debris'} $HOME/Imágenes/ $DRIVE_PATH/erick_backup/Imágenes
 ## Mamá ##
 rsync -rtvz --delete-after $HOME/Mamá/ $DRIVE_PATH/erick_backup/Mamá
 ## Música ##
