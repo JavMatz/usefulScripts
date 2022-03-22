@@ -1,0 +1,40 @@
+#!/usr/bin/env python
+"""Receive an image as a parameter, copy it to the wallpapers folder, set the
+image as a wallpaper and modify .xprofile to save the changes."""
+
+import argparse
+import os
+import shutil
+
+"""TODO: Check that parameter file is actually an image although xwallpaper
+will raise an error if it isn't anyway"""
+
+wallpapers_path = os.path.join(os.getenv('HOME'), 'Imágenes/Wallpapers/')
+
+
+def get_args():
+    parser = argparse.ArgumentParser(
+        description="Wrapper to set a wallpaper using xwallpaper.")
+    parser.add_argument('file', metavar='file',
+                        help='Image to use as wallpaper')
+    return parser.parse_known_args()
+
+
+if __name__ == '__main__':
+    args = get_args()[0]
+
+    # Copy the image to the wallpapers folder
+    img_abs_path = os.path.abspath(args.file)
+    if not os.path.isfile(wallpapers_path + args.file):
+        shutil.copy(img_abs_path, wallpapers_path)
+
+    xprofile_path = os.path.join(os.getenv('HOME'), '.xprofile')
+
+    # Set wallpaper
+    cmd = 'xwallpaper --output eDP-1 --zoom ' + wallpapers_path + args.file
+    os.system(cmd)
+
+    # Change xprofile
+    cmd = cmd.replace("/", r"\/")
+    sed = f"sed -i 's/^xwallpaper.*/{cmd}/' {xprofile_path}"
+    os.system(sed)
